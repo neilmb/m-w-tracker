@@ -1,1 +1,1 @@
-web: waitress-serve mwtracker:app
+web: waitress-serve --port=$PORT mwtracker:app
