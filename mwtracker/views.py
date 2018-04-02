@@ -13,5 +13,5 @@ def home():
 
 @app.route('/events')
 def events():
-    events = Event.query()
+    events = Event.query.all()
     return render_template('events.html', title='Events', events=events)
