@@ -1,7 +1,0 @@
-#alembic
-Flask
-#Flask-Migrate
-#Flask-Script
-flask-sqlalchemy
-gunicorn
-#psycopg2
