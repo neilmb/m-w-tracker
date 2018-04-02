@@ -16,16 +16,10 @@ logger = logging.getLogger('alembic.env')
 # add your model's MetaData object here
 # for 'autogenerate' support
 from flask import current_app
-import app
-target_metadata = app.db.metadata
+import mwtracker
+target_metadata = mwtracker.db.metadata
 config.set_main_option('sqlalchemy.url',
-                       app.app.config.get('SQLALCHEMY_DATABASE_URI'))
-#target_metadata = current_app.extensions['migrate'].db.metadata
-
-# other values from the config, defined by the needs of env.py,
-# can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
-# ... etc.
+                       mwtracker.app.config.get('SQLALCHEMY_DATABASE_URI'))
 
 
 def run_migrations_offline():

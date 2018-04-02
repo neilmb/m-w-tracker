@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}Events{% endblock %}
+
+{% block content %}
+  <h1>Events</h1>
+
+  <table>
+  {% for event in events %}
+    <tr>
+      <td>{{ event.time }}</td>
+      <td>{{ event.kind }}</td>
+      <td>{{ event.comment }}</td>
+    </tr>
+  {% endfor %}
+  </table>
+{% endblock %}
