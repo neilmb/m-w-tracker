@@ -1,1 +1,1 @@
-web: waitress-serve --port=$PORT mwtracker:app
+web: gunicorn mwtracker:app --log-file=- --access-logfile=-

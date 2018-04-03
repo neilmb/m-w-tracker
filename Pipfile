@@ -9,7 +9,8 @@ flask = "*"
 flask-migrate = "*"
 flask-script = "*"
 flask-sqlalchemy = "*"
-waitress = "*"
+flask-wtf = "*"
+gunicorn = "*"
 "psycopg2-binary" = "*"
 
 [dev-packages]
