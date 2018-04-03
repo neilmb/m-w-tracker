@@ -9,7 +9,7 @@ from flask import (escape,
                   )
 
 from mwtracker import app
-from .models import Event
+from .models import Event, Kind
 from .forms import AddForm
 
 @app.route('/')
@@ -25,6 +25,7 @@ def events():
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     form = AddForm()
+    form.kind.choices = [(row.id, row.name) for row in Kind.query.all()]
     if form.validate_on_submit():
         return redirect(url_for('events'))
     return render_template('add.html', title='Add Event', form=form)

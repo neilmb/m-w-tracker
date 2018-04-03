@@ -2,14 +2,22 @@
 import datetime as dt
 
 from flask_wtf import FlaskForm
+from wtforms_sqlalchemy.fields import QuerySelectField
 from wtforms import (DateTimeField,
+                     SelectField,
                      StringField,
                      SubmitField,
                     )
-from wtforms.validators import Required
+from wtforms.validators import (DataRequired,
+                                Required,
+                               )
+
+from . import models
 
 class AddForm(FlaskForm):
-    kind = StringField('Kind', validators=[Required()])
+    kind = SelectField('Kind',
+                       validators=[DataRequired()],
+                       coerce=int)
     time = DateTimeField('Time',
                          default=dt.datetime.utcnow(),
                          validators=[Required()])
