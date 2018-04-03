@@ -2,7 +2,6 @@
 import datetime as dt
 
 from flask_wtf import FlaskForm
-from wtforms_sqlalchemy.fields import QuerySelectField
 from wtforms import (DateTimeField,
                      SelectField,
                      StringField,
