@@ -14,11 +14,12 @@ from .forms import AddForm
 
 @app.route('/')
 def events():
-    events = (db.session.query(Event.time, Event.comment)
+    events = (db.session.query(Event.time, Event.comment, Event.id)
               .join(Kind).add_columns(Kind.name)
               .order_by(Event.time.desc())
               .all())
     return render_template('events.html', title='Events', events=events)
+
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
@@ -32,3 +33,12 @@ def add():
         db.session.commit()
         return redirect(url_for('events'))
     return render_template('add.html', title='Add Event', form=form)
+
+
+@app.route('/delete/<int:event_id>')
+def delete(event_id):
+    """Delete an event from the database."""
+    this_event = Event.query.filter(Event.id == event_id).one()
+    db.session.delete(this_event)
+    db.session.commit()
+    return redirect(url_for('events'))

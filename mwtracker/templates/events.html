@@ -9,12 +9,14 @@
       <th>Time</th>
       <th>Kind</th>
       <th>Comment</th>
+      <th></th>
     </tr>
   {% for event in events %}
     <tr>
       <td>{{ event.time }}</td>
       <td>{{ event.name }}</td>
       <td>{{ event.comment }}</td>
+      <td><a class="small" href="{{ url_for("delete", event_id=event.id) }}">delete</a></td>
     </tr>
   {% endfor %}
   </table>
