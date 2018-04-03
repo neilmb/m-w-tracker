@@ -13,11 +13,6 @@ from .models import Event, Kind
 from .forms import AddForm
 
 @app.route('/')
-def home():
-    app_str = escape(repr(app))
-    return render_template('index.html', title='Home', parameter=app_str)
-
-@app.route('/events')
 def events():
     events = (db.session.query(Event.time, Event.comment)
               .join(Kind).add_columns(Kind.name)
