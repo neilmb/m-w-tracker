@@ -19,7 +19,10 @@ def home():
 
 @app.route('/events')
 def events():
-    events = Event.query.join(Kind).all()
+    events = (db.session.query(Event.time, Event.comment)
+              .join(Kind).add_columns(Kind.name)
+              .order_by(Event.time.desc())
+              .all())
     return render_template('events.html', title='Events', events=events)
 
 @app.route('/add', methods=['GET', 'POST'])
