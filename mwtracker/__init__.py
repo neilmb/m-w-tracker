@@ -13,3 +13,6 @@ db = SQLAlchemy(app)
 
 from .views import *
 from .models import *
+
+from .api import api
+app.register_blueprint(api, url_prefix='/api')

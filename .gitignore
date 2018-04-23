@@ -102,3 +102,6 @@ ENV/
 
 # Node
 node_modules/
+
+# webpacked code
+mwtracker/static/bundle.js

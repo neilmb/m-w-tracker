@@ -21,6 +21,10 @@
   },
   "homepage": "https://github.com/neilmb/m-w-tracker#readme",
   "dependencies": {
+    "bootstrap": "^4.1.0",
+    "jquery": "^3.3.1",
+    "npm": "^5.8.0",
+    "popper.js": "^1.14.3",
     "react": "^16.3.2",
     "react-dom": "^16.3.2"
   },

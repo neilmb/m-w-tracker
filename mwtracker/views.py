@@ -1,10 +1,8 @@
 
 """Views for app."""
 
-from flask import (escape,
-                   redirect,
+from flask import (redirect,
                    render_template,
-                   request,
                    url_for,
                   )
 
@@ -13,12 +11,8 @@ from .models import Event, Kind
 from .forms import AddForm
 
 @app.route('/')
-def events():
-    events = (db.session.query(Event.time, Event.comment, Event.id)
-              .join(Kind).add_columns(Kind.name)
-              .order_by(Event.time.desc())
-              .all())
-    return render_template('events.html', title='Events', events=events)
+def index():
+    return render_template('events.html', title='Events')
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -31,14 +25,5 @@ def add():
                           comment=form.comment.data)
         db.session.add(new_event)
         db.session.commit()
-        return redirect(url_for('events'))
+        return redirect(url_for('index'))
     return render_template('add.html', title='Add Event', form=form)
-
-
-@app.route('/delete/<int:event_id>')
-def delete(event_id):
-    """Delete an event from the database."""
-    this_event = Event.query.filter(Event.id == event_id).one()
-    db.session.delete(this_event)
-    db.session.commit()
-    return redirect(url_for('events'))
