@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <script>
+    var element = main.React.createElement(
+      main.App.App,
+      {url: "{{ url_for('api.events') }}",
+       kinds: {{ kinds|tojson }}},
+      null);
+    main.ReactDOM.render(element, document.getElementById('root'));
+  </script>
+{% endblock %}

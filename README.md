@@ -7,6 +7,4 @@ MWTracker is an app for tracking events.
 - Multi-user capability
   + How to handle authentication to backend APIs? 
   + OAuth for authentication?
-- Easy workflow from main page
-  + React? API?
 - CSV export??
