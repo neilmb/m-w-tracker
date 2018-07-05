@@ -2,7 +2,12 @@
 import datetime
 import json
 
-from flask import Blueprint, redirect
+from flask import (Blueprint,
+                   current_app,
+                   jsonify,
+                   make_response,
+                   request
+                   )
 from sqlalchemy.orm.exc import NoResultFound
 
 
@@ -20,11 +25,13 @@ def _delete(event_id):
     db.session.commit()
     return ('', 204)
 
-
-@api.route('/event/<int:event_id>', methods=['DELETE'])
-def delete(event_id):
+@api.route('/event/<int:event_id>', methods=['GET', 'DELETE'])
+def event(event_id):
     """Delete an event from the database."""
-    return _delete(event_id)
+    if request.method == 'DELETE':
+        return _delete(event_id)
+    event = db.session.query(Event).filter_by(id=event_id).first()
+    return jsonify(event.to_dict())
 
 
 @api.route('/delete/<int:event_id>')
@@ -38,12 +45,30 @@ def _default_encoder(obj):
         return obj.isoformat()
 
 
-@api.route('/')
+@api.route('/', methods=['GET', 'POST'])
 def events():
-    events = (db.session.query(Event.time, Event.comment, Event.id)
-              .join(Kind).add_columns(Kind.name)
-              .order_by(Event.time.desc())
-              )
-    def _create_dict(r):
-        return {c.get('name'): getattr(r, c.get('name')) for c in events.column_descriptions}
-    return json.dumps([_create_dict(row) for row in events], default=_default_encoder)
+    if request.method == 'GET':
+        current_app.logger.info('Got request to list events')
+        events = (db.session.query(Event.time, Event.comment, Event.id)
+                .join(Kind).add_columns(Kind.name)
+                .order_by(Event.time.desc())
+                )
+        def _create_dict(r):
+            return {c.get('name'): getattr(r, c.get('name')) for c in events.column_descriptions}
+        return json.dumps([_create_dict(row) for row in events], default=_default_encoder)
+    else:
+        return create_event()
+
+def create_event():
+    current_app.logger.info('Got request to create event')
+    data = json.loads(request.data)
+    new_event = Event(kind_id=data['kind'],
+                      time=data['time'],
+                      comment=data['comment'])
+    db.session.add(new_event)
+    db.session.commit()
+    db.session.refresh(new_event)
+
+    resp = make_response(json.dumps({'id': new_event.id}))
+    resp.headers['Location'] = '/event/{}'.format(new_event.id)
+    return resp

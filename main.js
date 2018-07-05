@@ -1,11 +1,11 @@
-import Events from './events.jsx';
+import App from './app.jsx';
 import React from 'react'
 import ReactDOM from 'react-dom';
 
 import 'bootstrap';
 
 module.exports = {
-  Events: Events,
+  App: App,
   ReactDOM: ReactDOM,
   React: React
 }
