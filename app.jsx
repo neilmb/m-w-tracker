@@ -34,8 +34,8 @@ class App extends React.Component {
   render() {
     const { events, isLoading, error } = this.state;
     return (
-      <div className>
-        <AddForm kinds={this.props.kinds} url={this.props.url} updateCallback={this.loadEventsFromDatabase} />
+      <div className="container">
+        <AddForm url={this.props.url} updateCallback={this.loadEventsFromDatabase} />
         <table className="table table-striped">
             <thead>
             <tr>
@@ -57,10 +57,26 @@ class App extends React.Component {
 class AddForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {comment: '', time: new Date().toString(),  kind: props.kinds[0][0]};
+    this.state = {comment: '',
+                  time: new Date().toString(),
+                  kind: "",
+                  kinds: []
+                 };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+
+  discoverKinds() {
+    fetch(this.props.url + 'kinds')
+    .then(response => response.json())
+    .then(json => this.setState({kinds: json}))
+    .catch(error => console.log('Fetching kinds error:\n', error));
+  }
+
+  componentDidMount() {
+    this.discoverKinds();
   }
 
   // This is a managed-state input form, so this method keeps the internal
@@ -88,11 +104,11 @@ class AddForm extends React.Component {
   }
 
   render() {
-    const { kinds } = this.props;
+    const { kinds } = this.state;
     return (
       <form onSubmit={this.handleSubmit} className="form-inline pt-2 pb-2">
         <div className="col-sm-4 form-group">
-          <label for="comment1">Comment:</label>
+          <label htmlFor="comment1">Comment:</label>
           <input
             id="comment1"
             name="comment"
@@ -100,8 +116,8 @@ class AddForm extends React.Component {
             value={this.state.comment}
             onChange={this.handleChange} />
         </div>
-        <div className="col-sm-3 form-group">
-          <label for="time1">Date:</label>
+        <div className="col-sm-4 form-group">
+          <label htmlFor="time1">Date:</label>
           <input
             id="time1"
             name="time"
@@ -110,7 +126,7 @@ class AddForm extends React.Component {
             onChange={this.handleChange} />
         </div>
         <div className="col-sm-3 form-group">
-          <label for="kind1">Kind:</label>
+          <label htmlFor="kind1">Kind:</label>
           <select value={this.state.kind}
             id="kind1"
             name="kind"
@@ -120,7 +136,7 @@ class AddForm extends React.Component {
             {kinds.map((kind) => <option key={kind[0]} value={kind[0]}>{kind[1]}</option>)}
           </select>
         </div>
-        <input type="submit" className=" col-sm-2 btn btn-primary" value="Add" />
+        <input type="submit" className="col-sm-1 btn btn-primary" value="Add" />
       </form>
     );
   }

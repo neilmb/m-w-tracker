@@ -34,11 +34,6 @@ def event(event_id):
     return jsonify(event.to_dict())
 
 
-@api.route('/delete/<int:event_id>')
-def delete_get(event_id):
-    return _delete(event_id)
-
-
 def _default_encoder(obj):
     """JSON encoder function for SQLAlchemy special classes."""
     if isinstance(obj, datetime.datetime):
@@ -72,3 +67,9 @@ def create_event():
     resp = make_response(json.dumps({'id': new_event.id}))
     resp.headers['Location'] = '/event/{}'.format(new_event.id)
     return resp
+
+
+@api.route('/kinds', methods=['GET'])
+def kinds():
+    current_app.logger.info('Got request to list kinds')
+    return jsonify([(row.id, row.name) for row in Kind.query.all()])

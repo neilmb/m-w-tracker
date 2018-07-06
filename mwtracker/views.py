@@ -12,7 +12,4 @@ from .forms import AddForm
 
 @app.route('/')
 def index():
-    return render_template('main.html',
-						   title='Events',
-						   kinds=[(row.id, row.name) for row in Kind.query.all()]
-					 	  )
+    return render_template('main.html')
