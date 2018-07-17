@@ -58,7 +58,7 @@ class AddForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {comment: '',
-                  time: new Date().toString(),
+                  time: new Date().toISOString(),
                   kind: "",
                   kinds: []
                  };
@@ -71,7 +71,7 @@ class AddForm extends React.Component {
   discoverKinds() {
     fetch(this.props.url + 'kinds')
     .then(response => response.json())
-    .then(json => this.setState({kinds: json}))
+    .then(json => this.setState({kinds: json, kind: json[0][0]}))
     .catch(error => console.log('Fetching kinds error:\n', error));
   }
 
